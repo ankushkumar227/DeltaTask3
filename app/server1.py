@@ -1,18 +1,30 @@
 import socket
+import threading
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(('localhost', 5050))
 server.listen()
 print("Server started...")
 
-conn, addr = server.accept()
-print('connection from adress ', addr)
+def broadcast(conn,addr,msg):
+    for client in users :
+        if client != conn:
+            client.send(msg.encode())
 
-data = conn.recv(1024).decode()
-print('received ', data)
 
-conn.send("hello".encode())
+def handleClient(conn,addr):
 
-conn.close()
-server.close()
+    while True:
+        msg = conn.recv(1024).decode()
+        broadcast(conn,addr,msg)
+
+users = []
+while True:
+    try:
+        conn, addr = server.accept()
+        users.append(conn)
+        threading.Thread(target=handleClient, args=(conn,addr)).start()
+    except:
+        break
+
 
