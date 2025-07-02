@@ -1,10 +1,11 @@
 import socket
 import threading
 
-name = input()
+name = input('Enter name ')
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(('localhost',5050))
+client.send(name.encode())
 
 
 def send():
