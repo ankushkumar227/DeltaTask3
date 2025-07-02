@@ -6,6 +6,7 @@ server.bind(('localhost', 5050))
 server.listen()
 print("Server started...")
 
+
 def broadcast(conn,addr,msg):
     for client in users :
         if client != conn:
@@ -13,7 +14,7 @@ def broadcast(conn,addr,msg):
 
 
 def handleClient(conn,addr):
-
+    broadcast(conn,addr,msg)
     while True:
         msg = conn.recv(1024).decode()
         broadcast(conn,addr,msg)
