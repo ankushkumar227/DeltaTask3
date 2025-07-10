@@ -2,7 +2,6 @@ import socket
 import threading
 
 print("Welcome to ChatApp!")
-name = input('Enter your username: ')
 
 def send():
 
@@ -29,7 +28,7 @@ def recv():
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(('localhost',5050))
-client.send(name.encode())
+
 
 threading.Thread(target=send).start()
 threading.Thread(target=recv).start()
