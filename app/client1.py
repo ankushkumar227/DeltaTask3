@@ -1,12 +1,8 @@
 import socket
 import threading
 
-name = input('Enter name ')
-
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('localhost',5050))
-client.send(name.encode())
-
+print("Welcome to ChatApp!")
+name = input('Enter your username: ')
 
 def send():
 
@@ -17,26 +13,23 @@ def send():
             break
         client.send(msg.encode())
 
+
 def recv():
     while True:
         try:
             msg = client.recv(1024).decode()
+            if not msg:
+                print("Server closed the connection.")
+                client.close()
+                break
             print(msg)
         except Exception as e:
             print(f"recv() exited due to error")
             break
 
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(('localhost',5050))
+client.send(name.encode())
 
 threading.Thread(target=send).start()
 threading.Thread(target=recv).start()
-
-
-
-
-
-
-
-
-
-
-
