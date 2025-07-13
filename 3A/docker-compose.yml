@@ -1,0 +1,33 @@
+services:
+
+  app:
+    build: ./app
+    container_name: app
+    environment:
+      DB_HOST: mysql-service
+      DB_USER: Ankush
+      DB_PASSWORD: Elon@2005
+      DB_NAME: chatServer
+    volumes:
+      - ./scripts:/scripts
+    depends_on:
+      - mysql-service
+    ports:
+      - "5050:5050"
+    stdin_open: true     # -i
+    tty: true            # -t
+    command: bash        # or "sh" if bash not installed
+    
+  mysql-service:
+    image: mysql:8.0
+    container_name: mysql-service
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: chatServer
+      MYSQL_USER: Ankush
+      MYSQL_PASSWORD: Elon@2005
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-service/mysql_data:/var/lib/mysql
+      - ./mysql-service/init.sql:/docker-entrypoint-initdb.d/init.sql
